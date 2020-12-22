@@ -107,8 +107,8 @@ public class StdDrawDemo {
 	public static void main(String[] args) {
 		/** Try commenting out some of these calls and
 		* notice the differences. */
-		drawThree();
-		//drawRandom();
-		//drawZoom();
+		// drawThree();
+		// drawRandom();
+		drawZoom();
 	}
 }
