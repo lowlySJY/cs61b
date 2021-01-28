@@ -2,7 +2,7 @@ public class ArrayDeque<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
-    private T[] items = (T[]) new Object[8];
+    private T[] items = (T[]) new Object[2];
 
     public ArrayDeque() {
         nextFirst = items.length - 1;
@@ -32,23 +32,22 @@ public class ArrayDeque<T> {
     }
 
     public void addFirst(T x) {
-        if (size == items.length) {
-            resize(2 * items.length);
-        }
-
         items[nextFirst] = x;
         nextFirst--;
         size++;
+        if (size == items.length) {
+            resize(2 * items.length);
+        }
     }
 
     public void addLast(T x) {
+        items[nextLast] = x;
+        nextLast++;
+        size++;
         if (size == items.length) {
             resize(2 * items.length);
         }
 
-        items[nextLast] = x;
-        nextLast++;
-        size++;
     }
 
     private T getLast() {
@@ -56,6 +55,10 @@ public class ArrayDeque<T> {
     }
 
     public T get(int i) {
+        if (i >= items.length) {
+            return null;
+        }
+
         if (i <= items.length - nextFirst - 2) {
             return items[nextFirst + i + 1];
         }
@@ -130,10 +133,9 @@ public class ArrayDeque<T> {
             System.out.print(items[end] + " ");
             end++;
         }
-
     }
 
-    /**
+
     public static void main(String[] args) {
         ArrayDeque<Integer> a = new ArrayDeque();
         a.addLast(0);
@@ -161,5 +163,5 @@ public class ArrayDeque<T> {
         a.removeLast();
         a.removeFirst();
     }
-    */
+
 }
