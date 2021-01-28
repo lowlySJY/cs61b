@@ -11,9 +11,9 @@ public class ArrayDeque<T> {
         size = 0;
     }
 
-    public ArrayDeque(ArrayDeque other) {
+    private ArrayDeque(ArrayDeque other) {
         ArrayDeque aD = new ArrayDeque();
-        System.arraycopy(other.items, 0 , aD.items, 0, other.nextLast);
+        System.arraycopy(other.items, 0, aD.items, 0, other.nextLast);
         System.arraycopy(other.items, other.nextFirst + 1,
                 aD.items, other.nextFirst, other.l - other.nextFirst -1);
         aD.nextFirst = other.nextFirst;
