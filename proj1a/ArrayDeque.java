@@ -2,7 +2,7 @@ public class ArrayDeque<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
-    private T[] items = (T[]) new Object[3];
+    private T[] items = (T[]) new Object[8];
 
     public ArrayDeque() {
         nextFirst = items.length - 1;
@@ -11,7 +11,7 @@ public class ArrayDeque<T> {
     }
 
     private void downsize() {
-        if (4 * size < items.length) {
+        if (4 * size < items.length && items.length > 8) {
             T[] a = (T[]) new Object[items.length / 2];
             copyresize(items, a);
         }
@@ -92,12 +92,23 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        T x = getLast();
-        items[nextLast - 1] = null;
-        size--;
-        nextLast--;
-        downsize();
-        return x;
+        if (nextLast > 0) {
+            T x = getLast();
+            items[nextLast - 1] = null;
+            size--;
+            nextLast--;
+            downsize();
+            return x;
+        } else {
+            T x = items[items.length - 1];
+            T[] a = (T[]) new Object[items.length];
+            System.arraycopy(items, 0, a, 1, items.length - 2);
+            items = a;
+            nextFirst++;
+            size--;
+            downsize();
+            return x;
+        }
     }
 
     public void printDeque() {
@@ -114,20 +125,25 @@ public class ArrayDeque<T> {
 
     }
 
-    /**
+
     public static void main(String[] args) {
         ArrayDeque<Integer> a = new ArrayDeque();
+        a.addFirst(0);
+        System.out.println(a.isEmpty());
+        a.removeLast();
         a.addFirst(5);
-        a.addLast(9);
-        a.addLast(8);
+//        a.addLast(9);
+//        a.addLast(8);
+        a.removeFirst();
+        System.out.println(a.isEmpty());
         a.addFirst(4);
+        System.out.println(a.isEmpty());
         a.addFirst(3);
-        a.printDeque();
-        a.removeFirst();
-        a.removeFirst();
+//        a.printDeque();
+//        a.removeFirst();
+
         a.removeLast();
         a.removeFirst();
     }
-     */
-}
 
+}

@@ -155,4 +155,3 @@ public class LinkedListDeque<T> {
         return getRecursiveHelper(sentinel.next, index);
     }
 }
-
