@@ -2,7 +2,7 @@ public class ArrayDeque<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
-    private T[] items = (T[]) new Object[3];
+    private T[] items = (T[]) new Object[8];
 
     public ArrayDeque() {
         nextFirst = items.length - 1;
@@ -11,7 +11,7 @@ public class ArrayDeque<T> {
     }
 
     private void downsize() {
-        if (4 * size <= items.length && items.length > 8) {
+        if (4 * size < items.length && items.length > 8) {
             T[] a = (T[]) new Object[items.length / 2];
             copyresize(items, a);
         }
