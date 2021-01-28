@@ -76,44 +76,40 @@ public class ArrayDeque<I> {
             x = items[0];
             I[] a =(I[]) new Object[items.length];
             System.arraycopy(items, 1, a, 0, size - 1);
-            this.items = a;
-            --this.size;
-            --this.nextLast;
-            this.downsize();
+            items = a;
+            size--;
+            nextLast--;
+            downsize();
             return x;
         } else {
-            x = this.items[this.nextFirst + 1];
-            this.items[this.nextFirst + 1] = null;
-            --this.size;
-            ++this.nextFirst;
-            this.downsize();
+            x = items[nextFirst + 1];
+            items[nextFirst + 1] = null;
+            size--;
+            nextFirst++;
+            downsize();
             return x;
         }
     }
 
     public I removeLast() {
-        I x = this.getLast();
-        this.items[this.nextLast - 1] = null;
-        --this.size;
-        --this.nextLast;
-        this.downsize();
+        I x = getLast();
+        items[nextLast - 1] = null;
+        size--;
+        nextLast--;
+        downsize();
         return x;
     }
 
     public void printDeque() {
-        int begin = this.nextFirst + 1;
-
-        Object var10001;
-        int end;
-        for(end = 0; begin < this.items.length; ++begin) {
-            var10001 = this.items[begin];
-            System.out.print(var10001 + " ");
+        int begin = nextFirst + 1;
+        int end = 0;
+        while (begin < items.length) {
+            System.out.print(items[begin] + " ");
+            begin++;
         }
-
-        while(end < this.nextLast) {
-            var10001 = this.items[end];
-            System.out.print(var10001 + " ");
-            ++end;
+        while(end < nextLast) {
+            System.out.print(items[end] + " ");
+            end++;
         }
 
     }
