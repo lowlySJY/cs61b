@@ -24,6 +24,7 @@ public class TestPalindrome {
         assertFalse(palindrome.isPalindrome("cat"));
         assertTrue(palindrome.isPalindrome("a"));
         assertFalse(palindrome.isPalindrome("ab"));
+        assertTrue(palindrome.isPalindrome(""));
     }
 
     @Test
@@ -35,5 +36,6 @@ public class TestPalindrome {
         assertFalse(palindrome.isPalindrome("Cat", obo));
         assertFalse(palindrome.isPalindrome("non", obo));
         assertTrue(palindrome.isPalindrome("a", obo));
+        assertTrue(palindrome.isPalindrome("", obo));
     }
 }
