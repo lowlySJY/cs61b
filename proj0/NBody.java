@@ -23,6 +23,19 @@ public class NBody {
 
         return planets;
     }
+    public static Planet[] readPlanets(String fileName){
+        In in = new In(fileName);
+        int numOfPlanets = in.readInt();
+        in.readDouble();
+        Planet[] ps = new Planet[numOfPlanets];
+        for (int count = 0; count < numOfPlanets; count++){
+            ps[count] = new Planet(in.readDouble(), in.readDouble(), in.readDouble(),
+                    in.readDouble(), in.readDouble(), in.readString());
+        }
+        return ps;
+
+    }
+
     public static void main(String[] args) {
         double T = Double.parseDouble(args[0]);
         double current_T = 0;
