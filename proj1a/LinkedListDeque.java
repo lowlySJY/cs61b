@@ -28,7 +28,8 @@ public class LinkedListDeque<T> {
      * Returns true if deque is empty, false otherwise
      */
     public boolean isEmpty() {
-        if (sentinel.next == sentinel && sentinel.prev == sentinel && size == 0) {
+//        if (sentinel.next == sentinel && sentinel.prev == sentinel && size == 0) {
+        if (size == 0) {
             return true;
         }
         return false;
