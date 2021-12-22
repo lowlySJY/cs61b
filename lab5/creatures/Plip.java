@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * An implementation of a motile pacifist photosynthesizer.
@@ -29,16 +30,33 @@ public class Plip extends Creature {
      * blue color.
      */
     private int b;
+    /**
+     * fraction of energy to retain when replicating.
+     */
+    private double repEnergyRetained = 0.5;
+    /**
+     * fraction of energy to bestow upon offspring.
+     */
+    private double repEnergyGiven = 0.5;
+    /**
+     * probability of taking a move when see a "clorus" neighbor
+     */
+    private double moveProbability = 0.5;
+    /**
+     * the unit of energy lost when taking a move.
+     */
+    private double lostEnergyMove = 0.15;
 
     /**
      * creates plip with energy equal to E.
      */
     public Plip(double e) {
         super("plip");
-        r = 0;
-        g = 0;
-        b = 0;
+        r = 99;
+        g = 63;
+        b = 76;
         energy = e;
+        g += 96 * e;
     }
 
     /**
@@ -57,7 +75,6 @@ public class Plip extends Creature {
      * that you get this exactly correct.
      */
     public Color color() {
-        g = 63;
         return color(r, g, b);
     }
 
@@ -75,6 +92,8 @@ public class Plip extends Creature {
      */
     public void move() {
         // TODO
+        energy -= lostEnergyMove;
+        energy = Math.max(energy, 0);
     }
 
 
@@ -83,6 +102,8 @@ public class Plip extends Creature {
      */
     public void stay() {
         // TODO
+        energy += 0.2;
+        energy = Math.min(energy, 2);
     }
 
     /**
@@ -91,7 +112,9 @@ public class Plip extends Creature {
      * Plip.
      */
     public Plip replicate() {
-        return this;
+        double babyEnergy = energy * repEnergyGiven;
+        energy = energy * repEnergyRetained;
+        return new Plip(babyEnergy);
     }
 
     /**
@@ -113,18 +136,45 @@ public class Plip extends Creature {
         boolean anyClorus = false;
         // TODO
         // (Google: Enhanced for-loop over keys of NEIGHBORS?)
-        // for () {...}
-
-        if (false) { // FIXME
-            // TODO
+        for (Direction dir : neighbors.keySet()) {
+            if (neighbors.get(dir).name().equals("empty")) {
+                emptyNeighbors.add(dir);
+            }
+            if (neighbors.get(dir).name().equals("clorus")) {
+                anyClorus = true;
+            }
         }
-
+        Random random = new Random();
+        // Rule 1
+        if (emptyNeighbors.size() == 0) {
+            return new Action(Action.ActionType.STAY);
         // Rule 2
-        // HINT: randomEntry(emptyNeighbors)
-
+        } else if (energy >= 1) {
+            int randomInt = random.nextInt(emptyNeighbors.size());
+            Deque<Direction> pickDir = emptyNeighbors;
+            if (randomInt == 0) {
+                return new Action(Action.ActionType.REPLICATE, pickDir.getFirst());
+            } else {
+                for (int i=0; i < randomInt; i++) {
+                    pickDir.removeFirst();
+                }
+                return new Action(Action.ActionType.REPLICATE, pickDir.getFirst());
+            }
         // Rule 3
-
+        } else if (anyClorus && Math.random() < moveProbability) {
+            int randomInt = random.nextInt(emptyNeighbors.size());
+            Deque<Direction> pickDir = emptyNeighbors;
+            if (randomInt == 0) {
+                return new Action(Action.ActionType.MOVE, pickDir.getFirst());
+            } else {
+                for (int i=0; i < randomInt; i++) {
+                    pickDir.removeFirst();
+                }
+                return new Action(Action.ActionType.MOVE, pickDir.getFirst());
+            }
         // Rule 4
-        return new Action(Action.ActionType.STAY);
+        } else {
+            return new Action(Action.ActionType.STAY);
+        }
     }
 }
