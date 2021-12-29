@@ -5,7 +5,7 @@ public class GuitarString {
     /** Constants. Do not change. In case you're curious, the keyword final
      * means the values cannot be changed at runtime. */
     private static final int SR = 44100;      // Sampling Rate
-    private static final double DECAY = .996; // energy decay factor
+    private static final double DECAY = 0.996; // energy decay factor
 
     /* Buffer for storing sound data. */
     private BoundedQueue<Double> buffer;
@@ -16,6 +16,7 @@ public class GuitarString {
         //       cast the result of this division operation into an int. For
         //       better accuracy, use the Math.round() function before casting.
         //       Your buffer should be initially filled with zeros.
+        buffer = new ArrayRingBuffer<Double>((int) Math.round(SR / frequency));
     }
 
 
@@ -27,6 +28,13 @@ public class GuitarString {
         //
         //       Make sure that your random numbers are different from each
         //       other.
+        while (!this.buffer.isEmpty()) {
+            this.buffer.dequeue();
+        }
+        while (!this.buffer.isFull()) {
+            double r = Math.random() - 0.5;
+            this.buffer.enqueue(r);
+        }
     }
 
     /* Advance the simulation one time step by performing one iteration of
@@ -36,12 +44,16 @@ public class GuitarString {
         // TODO: Dequeue the front sample and enqueue a new sample that is
         //       the average of the two multiplied by the DECAY factor.
         //       Do not call StdAudio.play().
+        double itemDeque = this.buffer.dequeue();
+        double itemPeek = this.buffer.peek();
+        double itemEnque = DECAY * 0.5 * (itemDeque + itemPeek);
+        this.buffer.enqueue(itemEnque);
     }
 
     /* Return the double at the front of the buffer. */
     public double sample() {
         // TODO: Return the correct thing.
-        return 0;
+        return this.buffer.peek();
     }
 }
     // TODO: Remove all comments that say TODO when you're done.
