@@ -12,6 +12,31 @@ public class BubbleGridTest {
         int[] expected = {2};
 
         validate(grid, darts, expected);
+
+        int[][] darts2 = {{0,0}};
+        int[] expected2 = {3};
+        validate(grid, darts2, expected2);
+
+        int[][] grid3 = {{1, 0, 1}, {1, 1, 1}};
+        int[][] darts3 = {{0, 0}, {0, 2}, {1, 1}};
+        int[] expected3 = {0, 3, 0};
+
+        validate(grid3, darts3, expected3);
+
+        int[][] grid4 = {{1}, {1}, {1}, {1}, {1}};
+        int[][] darts4 = {{3, 0}, {4, 0}, {1, 0}, {2, 0}, {0, 0}};
+        int[] expected4 = {1, 0, 1, 0, 0};
+
+        validate(grid4, darts4, expected4);
+
+        int[][] grid5 = {{0, 1, 1, 1, 1}, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 0},
+                {0, 0, 1, 1, 0}, {0, 0, 1, 0, 0}, {0, 0, 1, 0, 0},
+                {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
+        int[][] darts5 = {{6, 0}, {1, 0}, {4, 3}, {1, 2}, {7, 1}, {6, 3}, {5, 2}, {5, 1},
+                {2, 4}, {4, 4}, {7, 3}};
+        int[] expected5 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+        validate(grid5, darts5, expected5);
     }
 
     private void validate(int[][] grid, int[][] darts, int[] expected) {
