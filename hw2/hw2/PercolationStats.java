@@ -8,12 +8,15 @@ public class PercolationStats {
     private int Times;
 
     // perform T independent experiments on a N-by-N grid
-    public void PercolationStats(int N, int T, PercolationFactory pf) {
+    public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException("N or T should be bigger than 0!");
+        }
         this.Times = T;
         FractionPerExper = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation p = pf.make(N);
-            FractionPerExper[i] = isPercolation(p, N);
+            FractionPerExper[i] = (double) isPercolation(p, N) / (double) (N*N);
         }
     }
 
@@ -37,12 +40,20 @@ public class PercolationStats {
     }
 
     // low endpoint of 95% confidence interval
-    public double confidencelow() {
+    public double confidenceLow() {
         return (this.mean() - 1.96 * this.stddev() / Math.sqrt(Times));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHigh() {
         return (this.mean() + 1.96 * this.stddev() / Math.sqrt(Times));
+    }
+
+    public static void main(String[] args) {
+        PercolationFactory pf = new PercolationFactory();
+        PercolationStats system = new PercolationStats(20,1000, pf);
+        System.out.println("The mean probability is: "+ system.mean());
+        System.out.println("The standard deviation is: "+ system.stddev());
+        System.out.println("The confidence interval is : ( " + system.confidenceLow() + " , " + system.confidenceHigh() + " )");
     }
 }

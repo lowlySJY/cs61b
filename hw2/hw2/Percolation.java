@@ -92,8 +92,6 @@ public class Percolation {
         return grid.connected(size, size +1);
     }
 
-/*
     // use for unit testing (not required, but keep this here for the auto-grader)
     public static void main(String[] args) { }
-*/
 }
