@@ -83,7 +83,7 @@ public class Percolation {
     }
 
     // number of open sites
-    public int numberofOpenSites() {
+    public int numberOfOpenSites() {
         return NumofOpensites;
     }
 
