@@ -73,6 +73,17 @@ public class BST<Key extends Comparable<Key>> {
 
     private Node root;             // root of BST
 
+    public double averageDepth() {
+        return (double) sumDepth(root, 0) / (double) this.size();
+    }
+
+    private int sumDepth(Node x, int depth) {
+        if (x == null) {
+            return 0;
+        }
+        return depth + sumDepth(x.left, depth + 1) + sumDepth(x.right, depth + 1);
+    }
+
     private class Node {
         private Key key;           // sorted by key
         private Node left, right;  // left and right subtrees
