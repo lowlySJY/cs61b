@@ -1,5 +1,6 @@
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
     // array of linked-list symbol tables
     private ArrayList<K>[] keyArray;
     private ArrayList<V>[] valArray;
-    private Set<K> KeySet;
+    private Set<K> KeySet = new HashSet<>();
 
     /**
      * Initializes an empty symbol table.
@@ -22,7 +23,6 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
     public MyHashMap() {
         this(16, 0.75);
     }
-
     public MyHashMap(int initialSize) {
         this(initialSize, 0.75);
     }
@@ -57,8 +57,8 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
 
     @Override
     public void clear() {
-        keyArray = new ArrayList[this.size];
-        valArray = new ArrayList[this.size];
+        keyArray = new ArrayList[this.tableSize];
+        valArray = new ArrayList[this.tableSize];
         size = 0;
     }
 
@@ -105,7 +105,7 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
         int hashcode = hash(key);
         if (containsKey(key)) {
             int index = keyArray[hashcode].indexOf(key);
-            valArray[hashcode].get(index);
+            valArray[hashcode].set(index, value);
         } else {
             if (keyArray[hashcode] == null) {
                 keyArray[hashcode] = new ArrayList<K>();
@@ -135,14 +135,31 @@ public class MyHashMap<K, V> implements Map61B<K, V>{
 
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
-//        return null;
+        if (key == null) {
+            throw new IllegalArgumentException("argument for remove() is null");
+        }
+        if (!containsKey(key)) {
+            return null;
+        } else {
+            V val = get(key);
+            int hashcode = hash(key);
+            int index = keyArray[hashcode].indexOf(key);
+            keyArray[hashcode].remove(index);
+            valArray[hashcode].remove(index);
+            return val;
+        }
     }
 
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
-//        return null;
+        if (key == null) {
+            throw new IllegalArgumentException("argument for remove() is null");
+        }
+        if (get(key) == value) {
+            return remove(key);
+        } else {
+            return null;
+        }
     }
 
     @Override
